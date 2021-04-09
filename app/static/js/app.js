@@ -72,14 +72,14 @@ const NotFound = {
     }
 };
 
-const Uploadform = {
+const UploadForm = {
     name: "UploadForm",
     template:`
     <div>
     <h2> Upload Form </h2>
-    <form v-on:submit.prevent="uploadPhoto" method="POST" enctype="multipart/form-data">
+    <form v-on:submit.prevent="uploadPhoto" method="POST" enctype="multipart/form-data" id="uploadForm">
 
-    <div class="form-group" id="uploadForm">
+    <div class="form-group">
 
         <label> Description: </label><br>
         <textarea name="description"> </textarea><br>
@@ -89,7 +89,7 @@ const Uploadform = {
 
     </div>
 
-        <button class="btn btn-primary mb-2" @click="uploadPhoto">Upload</button>
+        <button class="btn btn-primary mb-2" >Upload</button>
 
 
     </form>
@@ -98,7 +98,6 @@ const Uploadform = {
     
     
     `,
-   
 
     uploadPhoto(){
         let uploadForm = document.getElementById('uploadForm');
@@ -121,7 +120,36 @@ const Uploadform = {
             .catch(function (error) {
             console.log(error);
             });
-    }
+    },
+   
+    methods: {
+        uploadPhoto(){
+            let uploadForm = document.getElementById('uploadForm');
+            let form_data = new FormData(uploadForm);
+            fetch("/api/upload", {
+                method: 'POST',
+                body: form_data,
+                headers: {
+                    'X-CSRFToken': token
+                     },
+                     credentials: 'same-origin'
+               })
+                .then(function (response) {
+                return response.json();
+                })
+                .then(function (jsonResponse) {
+                // display a success message
+                console.log(jsonResponse);
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
+
+            }
+
+    },
+    
+    
 
     
 
@@ -130,7 +158,7 @@ const Uploadform = {
 // Define Routes
 const routes = [
     { path: "/", component: Home },
-    { path: "/upload" , component: Uploadform},
+    { path: "/upload" , component: UploadForm},
     
     // Put other routes here
 
