@@ -73,7 +73,7 @@ const NotFound = {
 };
 
 const UploadForm = {
-    name: "UploadForm",
+    name: "upload-form",
     data(){
         return{
             isSuccessUpload:false,
