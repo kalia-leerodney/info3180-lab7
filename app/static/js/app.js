@@ -3,7 +3,7 @@
 const app = Vue.createApp({
     data() {
         return {
-
+            
         }
     }
 });
@@ -74,9 +74,20 @@ const NotFound = {
 
 const UploadForm = {
     name: "UploadForm",
+    data(){
+        return{
+            isSuccessUpload:false,
+            displayFlash:false,
+            successmessage:"",
+            errormessage:"",
+        }
+    },
+
     template:`
     <div>
     <h2> Upload Form </h2>
+    <div  v-if="isSuccessUpload"> </div>
+   
     <form v-on:submit.prevent="uploadPhoto" method="POST" enctype="multipart/form-data" id="uploadForm">
 
     <div class="form-group">
@@ -84,7 +95,7 @@ const UploadForm = {
         <label> Description: </label><br>
         <textarea name="description"> </textarea><br>
 
-        <label> UploadPhoto: </label><br>
+        <label> Photo: </label><br>
         <input type="file" name="photo">
 
     </div>
@@ -99,28 +110,7 @@ const UploadForm = {
     
     `,
 
-    uploadPhoto(){
-        let uploadForm = document.getElementById('uploadForm');
-        let form_data = new FormData(uploadForm);
-        fetch("/api/upload", {
-            method: 'POST',
-            body: form_data,
-            headers: {
-                'X-CSRFToken': token
-                 },
-                 credentials: 'same-origin'
-           })
-            .then(function (response) {
-            return response.json();
-            })
-            .then(function (jsonResponse) {
-            // display a success message
-            console.log(jsonResponse);
-            })
-            .catch(function (error) {
-            console.log(error);
-            });
-    },
+   
    
     methods: {
         uploadPhoto(){
@@ -138,10 +128,13 @@ const UploadForm = {
                 return response.json();
                 })
                 .then(function (jsonResponse) {
+                isSuccessUpload = true
+                this.successmessage = "File Uploaded Successfully"
                 // display a success message
                 console.log(jsonResponse);
                 })
                 .catch(function (error) {
+                this.errormessage = "Something went wrong"
                 console.log(error);
                 });
 

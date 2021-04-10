@@ -1,3 +1,12 @@
 body {
     padding-top: 5rem;
 }
+
+textarea{
+    width:350px;
+    height:150px;
+}
+
+footer{
+    padding-bottom: 5px;
+}
